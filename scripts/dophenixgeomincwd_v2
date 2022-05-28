@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# module load phenix
+# assume phenix is already loaded
+touch "${GM_SERVER_FIFO_FLAG_FILE}"
+echo "$(realpath struct.pdb)" ${phenix_extra_input} write_geo_file=False directory="${PWD}" >> ${GM_SERVER_FIFO_IN}
+while [[ -e "${GM_SERVER_FIFO_FLAG_FILE}" ]]; do
+        sleep 1
+done
