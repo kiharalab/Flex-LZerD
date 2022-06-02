@@ -51,7 +51,6 @@ To run flexible fitting on a structure, you should first determine your unbound 
 
 Test protein
 ------------
-
 Flexible fitting can be run for the provided example protein and domains using the command:
 
 ```run_flexible_fitting.py docked_domains.pdb input_ligand_from_3nd2.pdb x x x gg1.0myout receptor_from_3ea5.pdb```
@@ -60,9 +59,11 @@ You should allow several hours for flexible fitting to complete. At each iterati
 
 Running a new protein
 ---------------------
+Once you have extracted your domains as above, you can then dock them using a protein docking method, for example LZerD. LZerD is available via an interactive web server at [https://lzerd.kiharalab.org](https://lzerd.kiharalab.org) and via downloadable executable at [https://kiharalab.org/proteindocking/lzerd.php](https://kiharalab.org/proteindocking/lzerd.php). Once you have obtained the domains you want to fit to, simply combine them into one PDB file, e.g. via [PyMOL](https://pymol.org) or the molecular editor of your choice, and follow the command as above.
 
-Once you have extracted your domains as above, you can then dock them using a protein docking method, for example LZerD. LZerD is available via an interactive web server at [https://lzerd.kiharalab.org](https://lzerd.kiharalab.org) and via downloadable executable at [https://kiharalab.org/proteindocking/lzerd.php](https://kiharalab.org/proteindocking/lzerd.php). Once you have obtained the domains you want to fit to, simply combine them into one PDB file, e.g. via PyMOL or the molecular editor of your choice, and follow the command as above.
-
+Output interpretation
+---------------------
+Flex-LZerD will generate a `.tar` file containing all frames of the flexible fitting to your domains. By unzipping this file and loading the contained PDB frame files into PyMOL, you can see the progression of your ligand as it is fit to your domains.
 
 Scoring
 -------
