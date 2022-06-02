@@ -495,7 +495,8 @@ orig_dists = getCACADistances(c)
 factor = 0.05
 use_n_modes = 20
 use_n_iter = 500
-mytar = tarfile.open("this.%s.rtb.tar" % os.environ["thisname"], "w")
+thisname = "gg1.0flexy"
+mytar = tarfile.open("this.%s.rtb.tar" % thisname, "w")
 
 prody.confProDy(verbosity="warning")
 for i in range(use_n_iter):
