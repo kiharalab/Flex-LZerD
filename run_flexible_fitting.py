@@ -45,6 +45,8 @@ from scipy.optimize import minimize
 
 import shutil
 
+exe_dir = os.path.dirname(os.path.abspath(__file__))
+
 prody.confProDy(auto_secondary=False)
 
 def doPhenixGeometryMinimization(struct, keepLog=False, receptor=None):
@@ -69,7 +71,7 @@ def doPhenixGeometryMinimization(struct, keepLog=False, receptor=None):
 	prody.writePDB(f, struct)
 
 	try:
-		ret = subprocess.check_output('bash ~/hingebin/dophenixgeomincwd_v2 '+os.getcwd(), shell=True, cwd=t)
+		ret = subprocess.check_output('bash '+exe_dir+'/dophenixgeomincwd_v2 '+os.getcwd(), shell=True, cwd=t)
 	except subprocess.CalledProcessError as e:
 		print(e.returncode)
 		print(e.output)
