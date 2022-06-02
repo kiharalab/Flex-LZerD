@@ -22,6 +22,10 @@ Installation
 
 To run the test, all Python dependencies are required.
 
+System requirements
+-------------------
+All Flex-LZerD tools were developed and tested on the CentOS and Ubuntu families of Linux operating systems. Flex-LZerD does not actively support Windows, MacOS, or other environments. The minimum suggested hardware is an AMD Rome or Intel Skylake-SP or newer CPU and at least 8 GB RAM.
+
 Python dependencies
 -------------------
 - python2.7
@@ -57,5 +61,16 @@ You should allow several hours for flexible fitting to complete. At each iterati
 Running a new protein
 ---------------------
 
+Once you have extracted your domains as above, you can then dock them using a protein docking method, for example LZerD. LZerD is available via an interactive web server at [https://lzerd.kiharalab.org](https://lzerd.kiharalab.org) and via downloadable executable at [https://kiharalab.org/proteindocking/lzerd.php](https://kiharalab.org/proteindocking/lzerd.php). Once you have obtained the domains you want to fit to, simply combine them into one PDB file, e.g. via PyMOL or the molecular editor of your choice, and follow the command as above.
+
+
 Scoring
----------------------
+-------
+The residue occupancies as described in the paper can be calculated via
+```
+count_residue_decoy_contacts receptor.pdb ligand.pdb ${RADIUS} < lzerd-rigid-transformations.txt > occupancies_${RADIUS}.txt'
+```
+where RADIUS is the occupancy distance cutoff, default 5.0 Å. The binding site consensus scores can then be calculated via
+```
+calc_binding_consensus_score receptor.pdb ligand.pdb ${RADIUS} occupancies_${RADIUS}.txt < lzerd-rigid-transformations.txt > binding_site_consensus_${RADIUS}.txt
+```
