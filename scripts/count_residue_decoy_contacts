@@ -1,0 +1,105 @@
+#!/usr/bin/env python3
+
+import argparse
+import sys
+import os
+import itertools
+from Bio.PDB import *
+from numpy import *
+import numpy
+from scipy.spatial import cKDTree
+import math
+import numpy as np
+import numpy.matlib as ml
+import numpy.linalg as npla
+
+parser = PDBParser()
+
+receptor_structure = parser.get_structure(sys.argv[1],sys.argv[1])
+ligand_structure = parser.get_structure(sys.argv[2],sys.argv[2])
+
+try:
+	contact_cutoff = float(sys.argv[3])
+except:
+	contact_cutoff = 5.
+
+receptor_a2resi = []
+receptor_a2res = []
+ligand_a2resi = []
+ligand_a2res = []
+receptor_atoms = []
+ligand_atoms = []
+
+for a in receptor_structure.get_atoms():
+	if a.element == "H":
+		continue
+	receptor_atoms.append(a)
+	receptor_a2res.append(a.get_parent())
+	receptor_a2resi.append(a.get_parent().get_id())
+receptor_base_coords = np.matrix(np.zeros((3,len(receptor_atoms))))
+for i, a in enumerate(receptor_atoms):
+	at = tuple(a.get_vector())
+	receptor_base_coords[:,i] = np.reshape(at, (3,1))
+
+for a in ligand_structure.get_atoms():
+	if a.element == "H":
+		continue
+	ligand_atoms.append(a)
+	ligand_a2res.append(a.get_parent())
+	ligand_a2resi.append(a.get_parent().get_id())
+ligand_base_coords = np.matrix(np.zeros((3,len(ligand_atoms))))
+for i, a in enumerate(ligand_atoms):
+	at = tuple(a.get_vector())
+	ligand_base_coords[:,i] = np.reshape(at, (3,1))
+
+
+def getContactsXY(r, l, r_res, l_res, radius=5.):
+	# returns residue ids of contact residues according to CAPRI 5\AA critera
+
+	rkdtree = cKDTree(r.transpose())
+	lkdtree = cKDTree(l.transpose())
+	result = lkdtree.query_ball_tree(rkdtree, radius)
+	rcontacts = set()
+	lcontacts = set()
+	pairs = set()
+	for i in range(len(l_res)):
+		if len(result[i]) > 0:
+			lcontacts.add(l_res[i])
+		for rp in result[i]:
+			rcontacts.add(r_res[rp])
+
+			pairs.add((r_res[rp], l_res[i]))
+
+	rcontacts = sorted(rcontacts)
+	lcontacts = sorted(lcontacts)
+	pairs = sorted(pairs)
+
+	return (rcontacts, lcontacts, pairs)
+
+from collections import defaultdict
+
+rec_counts = defaultdict(int)
+lig_counts = defaultdict(int)
+
+for line in sys.stdin:
+	l = line.split()
+	l = l[:12]
+	l = [float(x) for x in l]
+	rotl = l[:9]
+	transl = l[9:]
+	rot = np.matrix(rotl).reshape((3,3))
+	trans = np.matrix(transl).reshape((3,1))
+	T = ml.eye(4,4)
+	T[0:3,0:3] = rot
+	T[0:3,3] = trans
+	
+	(rContacts, lContacts, refPairs) = getContactsXY(receptor_base_coords, rot*ligand_base_coords + trans, receptor_a2res, ligand_a2res, contact_cutoff)
+	for rres, lres in refPairs:
+		rec_counts[rres.get_full_id()] += 1
+		lig_counts[lres.get_full_id()] += 1
+
+
+for rresid, count in rec_counts.items():
+	print("REC", rresid, count)
+for lresid, count in lig_counts.items():
+	print("LIG", lresid, count)

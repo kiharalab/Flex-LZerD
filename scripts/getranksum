@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+goapin=${1:-goap_score.txt}
+itscorein=${2:-scores.itscore}
+
+paste \
+<(cat $goapin    | awk '{print $2 " " $3}' | sort -k2,2 -n | awk '{print $1 " " $2 " " NR}' | sort -V) \
+<(cat $goapin    | awk '{print $2 " " $4}' | sort -k2,2 -n | awk '{print $1 " " $2 " " NR}' | sort -V) \
+<(cat $itscorein | awk '{print $1 " " $2}' | sort -k2,2 -n | awk '{print $1 " " $2 " " NR}' | sort -V) \
+ | awk '{print $7 "\t" $2 "\t" $3 "\t" $5 "\t" $6 "\t" $8 "\t" $9 "\t" $3+$6+$9}'
