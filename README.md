@@ -51,11 +51,11 @@ To run flexible fitting on a structure, you should first determine your unbound 
 
 Test protein
 ------------
-Flexible fitting can be run for the provided example protein and domains using the command:
+Flexible fitting can be run for the provided example protein and domains found in the `example/` directory using the command:
 
 ```run_flexible_fitting.py docked_domains.pdb input_ligand_from_3nd2.pdb x x x gg1.0myout receptor_from_3ea5.pdb```
 
-You should allow several hours for flexible fitting to complete. At each iteration, an output structure is written to `lastiter.pdb`, which can be viewed at any point during the fitting.
+You should allow several hours for flexible fitting to complete. At each iteration, an output structure is written to `lastiter.pdb`, which can be viewed at any point during the fitting. At the end, your output should be similar to the example output provided in `example/flex_output_ligand_model.pdb`.
 
 Running a new protein
 ---------------------
@@ -63,7 +63,7 @@ Once you have extracted your domains as above, you can then dock them using a pr
 
 Output interpretation
 ---------------------
-Flex-LZerD will generate a `.tar` file containing all frames of the flexible fitting to your domains. By unzipping this file and loading the contained PDB frame files into PyMOL, you can see the progression of your ligand as it is fit to your domains.
+Flex-LZerD will generate a `.tar` file containing all frames of the flexible fitting to your domains, as well as a `lastiter.pdb` file containing the most recent frame. By unzipping the tarball and loading the contained PDB frame files into PyMOL, you can see the progression of your ligand as it is fit to your domains. An example final frame is given in `example/flex_output_ligand_model.pdb`.
 
 Scoring
 -------
