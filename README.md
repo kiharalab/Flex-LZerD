@@ -4,7 +4,7 @@ Flex-LZerD models the bound conformation of a protein complex, where one protein
 
 Copyright (C) 2022 Charles Christoffer, Daisuke Kihara, and Purdue University.
 
-License: GPL v3
+License: GPL v3 (If you are interested in a different license, for example, for commercial use, please contact us.)
 
 Contact: Daisuke Kihara (dkihara@purdue.edu)
 
