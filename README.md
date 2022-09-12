@@ -11,10 +11,15 @@ Contact: Daisuke Kihara (dkihara@purdue.edu)
 ## Citation:
 ```
 @article{cwc2022flex,
-  title={},
-  author={Charles Christoffer, Daisuke Kihara},
-  journal={Submitted for publication}
+  title     = "Domain-based protein docking with extremely large conformational
+               changes",
+  author    = "Charles Christoffer, Daisuke Kihara",
+  journal   = "J. Mol. Biol.",
+  number    =  167820,
+  pages     = "167820",
+  year      =  2022
 }
+
 ```
 
 Installation
